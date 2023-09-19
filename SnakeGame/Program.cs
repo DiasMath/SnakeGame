@@ -50,7 +50,15 @@ void LerTeclas()
 
 void CriarComida()
 {
-    throw new NotImplementedException();
+    int aleatorioX, aleatorioY;
+    do
+    {
+        aleatorioX = random.Next(0, larguraTela);
+        aleatorioY = random.Next(0, alturaTela);
+    }
+    while (tela[aleatorioX, aleatorioY] is not null or " ");
+
+    tela[aleatorioX, aleatorioY] = "*";
 }
 
 void CriarCobra()
