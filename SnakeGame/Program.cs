@@ -45,7 +45,36 @@ void TransladarCobra()
 
 void LerTeclas()
 {
-    throw new NotImplementedException();
+    Thread task = new(LerAcaoDaTecla);
+    task.Start();
+}
+
+void LerAcaoDaTecla()
+{
+    while (jogoRodando)
+    {
+        var tecla = Console.ReadKey();
+
+        if(tecla.Key is ConsoleKey.UpArrow && direcao is not Direcao.Baixo)
+        {
+            direcao = Direcao.Cima;
+        }
+
+        if (tecla.Key is ConsoleKey.DownArrow && direcao is not Direcao.Cima)
+        {
+            direcao = Direcao.Baixo;
+        }
+
+        if (tecla.Key is ConsoleKey.LeftArrow && direcao is not Direcao.Direita)
+        {
+            direcao = Direcao.Esquerda;
+        }
+
+        if (tecla.Key is ConsoleKey.RightArrow && direcao is not Direcao.Esquerda)
+        {
+            direcao = Direcao.Direita;
+        }
+    }
 }
 
 void CriarComida()
