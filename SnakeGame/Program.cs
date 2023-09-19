@@ -11,3 +11,13 @@ List<Coordenada> coordenadasCobra = new();
 Direcao direcao = Direcao.Direita;
 int placar = 0;
 Random random = new();
+
+public void IniciarJogo()
+{
+
+}
+
+
+
+
+
