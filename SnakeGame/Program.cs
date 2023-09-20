@@ -12,6 +12,8 @@ Direcao direcao = Direcao.Direita;
 int placar = 0;
 Random random = new();
 
+IniciarJogo();
+
 void IniciarJogo()
 {
     CriarCobra();
@@ -21,7 +23,7 @@ void IniciarJogo()
     while (jogoRodando)
     {
         Thread.Sleep(50);
-        //TransladarCobra();
+        TransladarCobra();
         Renderizar();
     }
 
@@ -45,7 +47,7 @@ void Renderizar()
         {
             if (tela[l,a] is not null or " ")
             {
-                telaASerRenderizada += tela[l, a];
+                telaASerRenderizada += tela[l,a];
             }
             else
             {
@@ -56,12 +58,75 @@ void Renderizar()
         telaASerRenderizada += "\n";
     }
 
-    Console.WriteLine(telaASerRenderizada);
+    Console.Write(telaASerRenderizada);
 }
 
 void TransladarCobra()
 {
-    throw new NotImplementedException();
+    var cabeca = coordenadasCobra[0];
+    var coordenadaRaboX = coordenadasCobra[^1].X;
+    var coordenadaRaboY = coordenadasCobra[^1].Y;
+
+    for(int i = coordenadasCobra.Count - 1; i > 0; i--)
+    {
+        coordenadasCobra[i].X = coordenadasCobra[i - 1].X;
+        coordenadasCobra[i].Y = coordenadasCobra[i - 1].Y;
+    }
+
+    if(direcao is Direcao.Direita)
+    {
+        cabeca.X += 1;
+
+        if(cabeca.X > larguraTela - 1)
+        {
+            cabeca.X = 0;
+        }
+    }
+
+    if(direcao is Direcao.Esquerda)
+    {
+        cabeca.X--;
+
+        if(cabeca.X < 0)
+        {
+            cabeca.X = larguraTela - 1;
+        }
+    }
+
+    if(direcao is Direcao.Cima)
+    {
+        cabeca.Y--;
+
+        if(cabeca.Y < 0)
+        {
+            cabeca.Y = alturaTela - 1;
+        }
+    }
+
+    if(direcao is Direcao.Baixo)
+    {
+        cabeca.Y++;
+
+        if(cabeca.Y > alturaTela - 1)
+        {
+            cabeca.Y = 0;
+        }
+    }
+
+    if (tela[cabeca.X, cabeca.Y] == "*")
+    {
+        placar += random.Next(1, 10);
+        coordenadasCobra.Add(new Coordenada(coordenadaRaboX, coordenadaRaboY));
+        CriarComida();
+    }
+
+    if (tela[cabeca.X, cabeca.Y] == caractereCobra)
+    {
+        jogoRodando = false;
+        return;
+    }
+
+    AtualizarPosicaoCobra();
 }
 
 void LerTeclas()
@@ -101,6 +166,7 @@ void LerAcaoDaTecla()
 void CriarComida()
 {
     int aleatorioX, aleatorioY;
+
     do
     {
         aleatorioX = random.Next(0, larguraTela);
@@ -113,20 +179,21 @@ void CriarComida()
 
 void CriarCobra()
 {
-    coordenadasCobra.Add(new Coordenada(7, 14));
-    coordenadasCobra.Add(new Coordenada(8, 14));
     coordenadasCobra.Add(new Coordenada(9, 14));
+    coordenadasCobra.Add(new Coordenada(8, 14));
+    coordenadasCobra.Add(new Coordenada(7, 14));
 
     AtualizarPosicaoCobra();
 }
 
 void AtualizarPosicaoCobra()
 {
-    for(int l = 0; l < larguraTela; l++)
+    for (int l = 0; l < larguraTela; l++)
     {
-        for(int a = 0; a < larguraTela; a++)
+        for(int a = 0; a < alturaTela; a++)
         {
-            var posicaoDeveConterCobra = coordenadasCobra.Any(coordenada => coordenada.X == l && coordenada.Y == a);
+            var posicaoDeveConterCobra = coordenadasCobra.Any(coordenada => 
+            coordenada.X == l && coordenada.Y == a);
 
             if(posicaoDeveConterCobra)
             {
@@ -141,5 +208,3 @@ void AtualizarPosicaoCobra()
         }
     }
 }
-
-IniciarJogo();
