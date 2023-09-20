@@ -21,7 +21,7 @@ void IniciarJogo()
     while (jogoRodando)
     {
         Thread.Sleep(50);
-        TransladarCobra();
+        //TransladarCobra();
         Renderizar();
     }
 
@@ -30,12 +30,33 @@ void IniciarJogo()
 
 void FimDeJogo()
 {
-    throw new NotImplementedException();
+    Console.Clear();
+    Console.WriteLine($"Fim de jogo, pontuação: {placar}");
 }
 
 void Renderizar()
 {
-    throw new NotImplementedException();
+    Console.Clear();
+    var telaASerRenderizada = "";
+
+    for(int a = 0; a < alturaTela; a++)
+    {
+        for(int l = 0; l < larguraTela; l++)
+        {
+            if (tela[l,a] is not null or " ")
+            {
+                telaASerRenderizada += tela[l, a];
+            }
+            else
+            {
+                telaASerRenderizada += " ";
+            }
+        }
+
+        telaASerRenderizada += "\n";
+    }
+
+    Console.WriteLine(telaASerRenderizada);
 }
 
 void TransladarCobra()
@@ -120,3 +141,5 @@ void AtualizarPosicaoCobra()
         }
     }
 }
+
+IniciarJogo();
